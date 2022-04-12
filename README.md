@@ -14,16 +14,17 @@ Steps
     @using BlazorValidation
 
 full example:
+
 Model
 -----
-public class Habitant
+`public class Habitant
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public Address Address { get; set; }
-}
+}`
 
- public class Address
+`public class Address
 {
     public string Country { get; set; }
 
@@ -36,7 +37,7 @@ public class Habitant
     public string Number { get; set; }
 
     public string Extension { get; set; }
-}
+}`
 
 Validators
 ---------
