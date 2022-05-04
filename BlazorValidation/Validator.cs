@@ -24,6 +24,9 @@ namespace BlazorValidation
         public bool ValidateModelOnFieldChange { get; set; }
 
         [Parameter]
+        public ValidationMessageStore? ValidationMessageStore { get; set; }
+
+        [Parameter]
         public EventCallback<bool> OnModelValidation { get; set; }
 
         private IValidator _validator;
@@ -63,7 +66,8 @@ namespace BlazorValidation
 
         void EditContextChanged()
         {
-            _validationMessageStore = new ValidationMessageStore(EditContext);
+            if (ValidationMessageStore == null)
+                ValidationMessageStore = new ValidationMessageStore(EditContext);
             HookUpEditContextEvents();
         }
 
