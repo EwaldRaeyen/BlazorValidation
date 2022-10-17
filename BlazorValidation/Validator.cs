@@ -30,7 +30,6 @@ namespace BlazorValidation
         public EventCallback<bool> OnModelValidation { get; set; }
 
         private IValidator _validator;
-        private ValidationMessageStore _validationMessageStore;
         private readonly char[] _separators = new[] { '.', '[' };
 
         [Inject]
@@ -79,7 +78,7 @@ namespace BlazorValidation
 
         private void ValidationRequested(object sender, ValidationRequestedEventArgs args)
         {
-            _validationMessageStore.Clear();
+            ValidationMessageStore.Clear();
             var model = EditContext.Model;
             ValidationRequestedRec(model);
         }
@@ -92,7 +91,7 @@ namespace BlazorValidation
             foreach (var error in result.Errors)
             {
                 var fieldIdentifier = FieldIdentifierHelper.ToFieldIdentifier(EditContext, error.PropertyName);
-                _validationMessageStore.Add(fieldIdentifier, error.ErrorMessage);
+                ValidationMessageStore.Add(fieldIdentifier, error.ErrorMessage);
             }
 
             var members = model.GetType().GetMembers(BindingFlags.GetProperty);
@@ -144,7 +143,7 @@ namespace BlazorValidation
             foreach (ValidationFailure error in validationResult.Errors)
             {
                 var fieldIdentifier = new FieldIdentifier(model, error.PropertyName);
-                _validationMessageStore.Add(fieldIdentifier, error.ErrorMessage);
+                ValidationMessageStore.Add(fieldIdentifier, error.ErrorMessage);
             }
             EditContext.NotifyValidationStateChanged();
         }
@@ -152,7 +151,7 @@ namespace BlazorValidation
         private async void FieldChanged(object sender, FieldChangedEventArgs args)
         {
             FieldIdentifier fieldIdentifier = args.FieldIdentifier;
-            _validationMessageStore.Clear(fieldIdentifier);
+            ValidationMessageStore.Clear(fieldIdentifier);
 
             var propertiesToValidate = new string[] { fieldIdentifier.FieldName };
             var validator = GetValidatorForField(fieldIdentifier);
